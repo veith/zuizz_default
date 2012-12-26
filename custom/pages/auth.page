@@ -1,0 +1,3 @@
+
+{ZU_load feature="com.zuizz.auth.default" zone="default"}
+{ZU_load feature="com.zuizz.auth.redirect" zone="default" priority=100}

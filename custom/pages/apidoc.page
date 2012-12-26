@@ -1,0 +1,10 @@
+{ZU_load feature="com.zuizz.apidoc.navbar" zone="navbar"}
+{ZU_load feature="com.zuizz.apidoc.search" zone="topsidebar"}
+
+{ZU_load feature="com.zuizz.apidoc.sidebar" zone="sidebar"}
+
+{ZU_load feature="com.zuizz.apidoc.titlebar" zone="topdefault"}
+{ZU_load feature="com.zuizz.apidoc.mainview" zone="default"}
+
+{ZU_load feature="com.zuizz.apidoc.modal.restlet" zone="default"}
+{ZU_load feature="com.zuizz.apidoc.modal.restlet" skin="clone" zone="default"}
