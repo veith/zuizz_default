@@ -1,0 +1,15 @@
+[submodule "feature/com.zuizz.core"]
+	path = feature/com.zuizz.core
+	url = https://github.com/veith/com.zuizz.core.git
+[submodule "feature/com.zuizz.pages"]
+	path = feature/com.zuizz.pages
+	url = https://github.com/veith/com.zuizz.pages.git
+[submodule "feature/com.zuizz.auth"]
+	path = feature/com.zuizz.auth
+	url = https://github.com/veith/com.zuizz.auth.git
+[submodule "feature/com.zuizz.apidoc"]
+	path = feature/com.zuizz.apidoc
+	url = https://github.com/veith/com.zuizz.apidoc.git
+[submodule "zuizz"]
+	path = zuizz
+	url = https://github.com/veith/zuizz.git
