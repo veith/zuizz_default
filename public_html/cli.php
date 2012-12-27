@@ -33,7 +33,7 @@ if (getenv ( 'sysmode' ) != '') {
 	echo ("Sysmode not set, refer to your server manual\n");
     exit ( 1 );
 }
-session_save_path(ZU_DIR_TMP);
+    session_save_path(ZU_DIR_SESSION);
 
 	// set error reporting
 	error_reporting ( E_ALL );

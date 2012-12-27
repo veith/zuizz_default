@@ -58,7 +58,7 @@ if ($_REQUEST ['feature']) {
     } else {
         die("Sysmode not set, refer to your server manual");
     }
-    session_save_path(ZU_DIR_TMP);
+    session_save_path(ZU_DIR_SESSION);
 
     $ZUVALS = array();
     global $ZUVALS;
