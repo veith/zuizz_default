@@ -77,7 +77,6 @@ if (! is_object ( $page )) {
 
 	// check Permissions
 	if (!ZU::check_permission ( 100, $page ['page_id'], 1 )) {
-
         if(!isset($_SESSION['loopcounter'])){
             $_SESSION['loopcounter']=1;
         }
@@ -118,5 +117,4 @@ if (! is_object ( $page )) {
 
 	// pagecontent verarbeiten und mit pagelayout zusammenführen
 	$smarty->process_feature_stack ();
-
 }
