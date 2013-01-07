@@ -4,7 +4,7 @@
  * @param $params Array Load Parameter (feature, [zone:default],[skin:default],[priority:50], [featureeigene])
  * @param $smarty Object Referenz auf die smarty Instanz
  */
-function smarty_function_ZU_load($params, $smarty, $template) {
+function smarty_function_ZU_load($params, $smarty) {
 
 	if (! isset ( $params ['feature'] )) {
 		$smarty->trigger_error ( "ZUload: missing 'feature' parameter" );
