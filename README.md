@@ -1,4 +1,4 @@
-zuizz_default
-=============
+Akarat
+======
 
-Default zuizz environment
+Akarat ist ein Zeierfassungssystem. Das wird super!
