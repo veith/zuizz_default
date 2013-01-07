@@ -1,4 +1,4 @@
 Akarat
 ======
 
-Akarat ist ein Zeierfassungssystem. Das wird super!
+Akarat ist ein Zeiterfassungssystem. Das wird super!
