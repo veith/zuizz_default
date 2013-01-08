@@ -1,2 +1,17 @@
-# PHPStorm IDE
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# PHPStorm IDE related files
 .idea
+
+# Project related files
+/data/cache/net.smarty.cache/*
+/data/session/*
+/data/temp/net.smarty.compile/*
