@@ -15,3 +15,5 @@ Thumbs.db
 /data/cache/net.smarty.cache/*
 /data/session/*
 /data/temp/net.smarty.compile/*
+
+!.gitkeep
