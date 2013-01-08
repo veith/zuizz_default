@@ -6,8 +6,13 @@
  * returns string Html oder andere Ausgabe des Features
  */
 
-function smarty_function_ZU_load_direct($params, $smarty, $template) {
+function smarty_function_ZU_load_direct($params, $smarty) {
     // erstelle eine dynamic zone um dann das selbe zu machen wie der normale load aufruf
+
+    if(!isset($GLOBALS['buffer']['dynamiczoneindex'])){
+        $GLOBALS['buffer']['dynamiczoneindex'] = 0;
+    }
+
     $GLOBALS['buffer']['dynamiczoneindex']++;
     $zone = "dynamic" . $GLOBALS['buffer']['dynamiczoneindex'];
     $params['zone'] = $zone;
@@ -32,4 +37,3 @@ function smarty_function_ZU_load_direct($params, $smarty, $template) {
 
     return "<!-- [zone:{$zone}] -->";
 }
-?>
