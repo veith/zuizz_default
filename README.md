@@ -1,4 +1,4 @@
-Akarat
-======
+zuizz_default
+=============
 
-Akarat ist ein Zeiterfassungssystem. Das wird super!
+Default zuizz environment
