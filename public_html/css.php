@@ -41,7 +41,7 @@ header("Connection: Keep-Alive");
 header("Date: ".gmdate("D, d M Y H:i:s", time())." GMT");
 header("Last-Modified: ".gmdate("D, d M Y H:i:s", $lastmod)." GMT");
 header("ETag: $ETag");
-header("Keep-Alive: timeout=300");
+
 
 if (is_file ( $cssfile )) {
 

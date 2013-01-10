@@ -33,14 +33,16 @@ function smarty_modifier_Tcskin($tcskin, $feature = NULL, $media = "screen,proje
     // js bei existenz injecten
     if (is_file(ZU_DIR_FEATURE . $feature . '/js/' . $tcskin . '.js')) {
         if (empty ($GLOBALS ['ZU_feature_js'] ["{$feature}.{$tcskin}"])) {
-            $GLOBALS ['ZU_feature_js'] ["{$feature}.{$tcskin}"] = '<script src="/js.php?feature=' . $feature . '&js=' . $tcskin . '.js"  type="text/javascript"></script>';
+            //$GLOBALS ['ZU_feature_js'] ["{$feature}.{$tcskin}"] = '<script src="/js.php?feature=' . $feature . '&js=' . $tcskin . '.js"  type="text/javascript"></script>';
+            $GLOBALS ['ZU_feature_js'] ["{$feature}.{$tcskin}"] = '<script src="/zujs/' . $feature . '/' . $tcskin . '.js"  type="text/javascript"></script>';
         }
     }
 
     // css bei existenz injecten
     if (is_file(ZU_DIR_FEATURE . $feature . '/css/' . $tcskin . '.css')) {
         if (empty ($GLOBALS ['ZU_feature_css'] ["{$feature}.{$tcskin}"])) {
-            $GLOBALS ['ZU_feature_css'] ["{$feature}.{$tcskin}"] = '<LINK rel="stylesheet" type="text/css" href="/css.php?feature=' . $feature . '&css=' . $tcskin . '" media="' . $media . '">';
+            //$GLOBALS ['ZU_feature_css'] ["{$feature}.{$tcskin}"] = '<LINK rel="stylesheet" type="text/css" href="/css.php?feature=' . $feature . '&css=' . $tcskin . '" media="' . $media . '">';
+            $GLOBALS ['ZU_feature_css'] ["{$feature}.{$tcskin}"] = '<LINK rel="stylesheet" type="text/css" href="/zucss/' . $feature . '/' . $tcskin . '" media="' . $media . '">';
         }
     }
 

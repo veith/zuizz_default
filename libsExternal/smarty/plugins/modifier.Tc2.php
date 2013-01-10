@@ -36,14 +36,16 @@ function smarty_modifier_Tc2($list_of_modules, $feature = NULL, $media = "screen
         // js bei existenz injecten
         if (is_file(ZU_DIR_FEATURE . $feature . '/js/' . $TcModule . '.js')) {
             if (empty ($GLOBALS ['ZU_feature_js'] ["{$feature}.{$TcModule}"])) {
-                $GLOBALS ['ZU_feature_js'] ["{$feature}.{$TcModule}"] = '<script src="/js.php?feature=' . $feature . '&js=' . $TcModule . '.js"  type="text/javascript"></script>';
+                //$GLOBALS ['ZU_feature_js'] ["{$feature}.{$TcModule}"] = '<script src="/js.php?feature=' . $feature . '&js=' . $TcModule . '.js"  type="text/javascript"></script>';
+                $GLOBALS ['ZU_feature_js'] ["{$feature}.{$TcModule}"] = '<script src="/zujs/' . $feature . '/' . $TcModule . '.js"  type="text/javascript"></script>';
             }
         }
 
         // css bei existenz injecten
         if (is_file(ZU_DIR_FEATURE . $feature . '/css/' . $TcModule . '.css')) {
             if (empty ($GLOBALS ['ZU_feature_css'] ["{$feature}.{$TcModule}"])) {
-                $GLOBALS ['ZU_feature_css'] ["{$feature}.{$TcModule}"] = '<link rel="stylesheet" type="text/css" href="/css.php?feature=' . $feature . '&css=' . $TcModule . '" media="' . $media . '">';
+                //$GLOBALS ['ZU_feature_css'] ["{$feature}.{$TcModule}"] = '<link rel="stylesheet" type="text/css" href="/css.php?feature=' . $feature . '&css=' . $TcModule . '" media="' . $media . '">';
+                $GLOBALS ['ZU_feature_css'] ["{$feature}.{$TcModule}"] = '<LINK rel="stylesheet" type="text/css" href="/zucss/' . $feature . '/' . $TcModule . '" media="' . $media . '">';
             }
         }
 
