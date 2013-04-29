@@ -1,29 +1,35 @@
 <?php
-define ( "ZU_DIR", getcwd () );
+define ("ZU_DIR", getcwd());
 
 // Wenn Project Dir in zuizz ist
 //define("PROJECT_DIR",  ZU_DIR . "/zuizz/");
 
 // wenn Project Dir parent von ZU_DIR ist
-define("PROJECT_DIR",  dirname(ZU_DIR) . "/");
+define("PROJECT_DIR", dirname(ZU_DIR) . "/");
 
 // Wenn Project Dir gleich ZU_DIR ist
 //define("PROJECT_DIR",  ZU_DIR);
 
 
 // load constants
-if (getenv ( 'sysmode' ) != '') {
-	include_once PROJECT_DIR . '/config/' . getenv ( 'sysmode' ) . '.main.constants.ini.php';
+if (getenv('sysmode') != '') {
+    include_once PROJECT_DIR . '/config/' . getenv('sysmode') . '.main.constants.ini.php';
 } else {
-	die("Sysmode not set, refer to your server manual");
+    die("Sysmode not set, refer to your server manual");
 }
 session_save_path(ZU_DIR_SESSION);
 
 
 //IDEA:: Themed css files
 
-$cssfile = ZU_DIR_FEATURE . basename ( $_REQUEST ['feature'] ) . '/css/' . basename ( $_REQUEST ['css'] ) . '.css';
-$lastmod =filemtime($cssfile);
+if (substr(basename($_REQUEST ['css']),  -4) == '.css') {
+    $css = basename($_REQUEST ['css']);
+} else {
+    $css = basename($_REQUEST ['css']) . '.css';
+}
+
+$cssfile = ZU_DIR_FEATURE . basename($_REQUEST ['feature']) . '/css/' . $css;
+$lastmod = filemtime($cssfile);
 // Inode
 $ETag = dechex(fileinode($cssfile));
 // Size
@@ -38,22 +44,22 @@ if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $
 }
 
 header("Connection: Keep-Alive");
-header("Date: ".gmdate("D, d M Y H:i:s", time())." GMT");
-header("Last-Modified: ".gmdate("D, d M Y H:i:s", $lastmod)." GMT");
+header("Date: " . gmdate("D, d M Y H:i:s", time()) . " GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s", $lastmod) . " GMT");
 header("ETag: $ETag");
 
 
-if (is_file ( $cssfile )) {
+if (is_file($cssfile)) {
 
 
     // open the file in a binary mode
-	$fp = fopen ( $cssfile, 'rb' );
+    $fp = fopen($cssfile, 'rb');
 
-	// send the right headers
-	header ( "Content-Type: text/css; charset=utf-8" );
-	header ( "Content-Length: " . filesize ( $cssfile ) );
+    // send the right headers
+    header("Content-Type: text/css; charset=utf-8");
+    header("Content-Length: " . filesize($cssfile));
     // send file
-	fpassthru ( $fp );
+    fpassthru($fp);
 } else {
     header("HTTP/1.0 404 Not Found");
     echo "file not available";
