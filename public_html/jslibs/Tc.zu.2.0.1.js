@@ -147,9 +147,9 @@
                 localStorage[self.resourceURI + '_order_' + requestType] = [field, direction];
             } else {
                 self.resourceOrder.list = [field, direction];
-                localStorage[this.resourceURI + '_order_list' = [field, direction];
+                localStorage[this.resourceURI + '_order_list'] = [field, direction];
                 self.resourceOrder.search = [field, direction];
-                localStorage[this.resourceURI + '_order_search' = [field, direction];
+                localStorage[this.resourceURI + '_order_search'] = [field, direction];
             }
         },
 
