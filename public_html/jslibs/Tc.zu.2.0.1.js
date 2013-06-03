@@ -3,199 +3,295 @@
  *
  * @author Veith
  * @namespace Tc
- * @class zu.REST
- * @static
  */
+
+
+Tc.zu = {};
+(function ($) {
+
+
+    Tc.zu.rest =
+        function (resourceURI) {
+            this.URI = resourceURI; // /rest/com.zuizz.user.users
+
+            this.init = function () {
+                this.Id = null;
+                this.Mimetype = {'search': 'json', 'list': 'json', 'entity': 'json'};
+                this.Page = {'search': 0, 'list': 0};
+                this.NumOfPages = {'search': 0, 'list': 0};
+                this.Limit = {'search': 10, 'list': 10};
+                this.Fields = {'search': ['id'], 'list': ['id', 'title'], 'entity': ['id']};
+                this.Scope = {'search': {}, 'list': {}};
+                this.DataType = {'search': 'json', 'list': 'json', 'entity': 'json'};
+                this.JsonpCallback = {'search': null, 'list': null, 'entity': null};
+
+
+                if (localStorage[this.URI + '_order_list'] == undefined) {
+                    localStorage[this.URI + '_order_list'] = [
+                        ['id', 1]
+                    ];
+                }
+
+                if (localStorage[this.URI + '_order_search'] == undefined) {
+                    localStorage[this.URI + '_order_search'] = [
+                        ['id', 1]
+                    ];
+                }
+
+                this.Order = {
+                    'search': localStorage[this.URI + '_order_search'],
+                    'list': localStorage[this.URI + '_order_list']
+                };
+
+
+            };
+            this.init();
+
+
+            /**
+             * Get a specific item from resource
+             *
+             * @method resGet
+             * @param {id} identifier Resource identifier
+             * @param {object} statusCode Callback functions for status codes
+             * @param {array} additional_data (optional)
+             * @return void
+             */
+            this.get = function (identifier, statusCode) {
+
+
+                this.Id = identifier;
+                $.ajax({
+                    url: this.URI + '/' + this.Id + '.' + this.Mimetype.entity,
+                    type: 'GET',
+                    dataType: this.DataType.entity,
+                    resourceDataType: this.JsonpCallback.entity,
+                    data: {
+                        'fields': this.Fields.entity
+                    },
+                    'statusCode': statusCode
+                });
+            };
+
+
+            /**
+             * Search a list from resource
+             *
+             * @method restList
+             * @param {string} query Search term
+             * @param {object} statusCode Callback functions for status codes
+             * @param {array} additional_data (optional)
+             * @param {int} page (optional)
+             * @return void
+             */
+            this.search = function (query, statusCode, additional_data, page) {
+
+                var data = {};
+                if (page != undefined) {
+                    if (typeof (additional_data) != "object") {
+                        this.Page.list = data;
+                    }
+                }
+
+                if (typeof (additional_data) == "object") {
+                    data = additional_data;
+                }
+                data.q = query;
+                data.fields = this.Fields.search;
+                data.page = this.Page.search;
+                data.limit = this.Limit.search;
+                data.scope = this.Scope.search;
+                data.order = this.Order.search[0];
+                data.order_dir = this.Order.search[1];
+
+                var self = this;
+                if (statusCode[200] != undefined) {
+                    statusCode['t200'] = statusCode[200];
+                }
+
+                statusCode[200] = function (r) {
+                    if (r.metadata != undefined) {
+                        self.page.search = r.metadata.page;
+                        self.NumOfPages.search = r.metadata.pages;
+                    }
+                    if (statusCode[200] != undefined) {
+                        statusCode['t200'](r);
+                    }
+                };
+
+                $.ajax({
+                    'url': this.URI + '.' + this.Mimetype.search,
+                    'type': 'GET',
+                    'dataType': this.DataType.search,
+                    'resourceDataType': this.JsonpCallback.search,
+                    'data': data,
+                    'statusCode': statusCode
+                });
+            };
+
+            /**
+             * Receive a list from resource
+             * @method restList
+             * @param {object} statusCode Callback functions for status codes
+             * @param {array} additional_data (optional)
+             * @param {int} page (optional)
+             * @return void
+             */
+            this.list = function (statusCode, additional_data, page) {
+
+                var data = {};
+                if (page != undefined) {
+                    if (typeof (additional_data) != "object") {
+                        this.Page.list = data;
+                    }
+                }
+
+                if (typeof (additional_data) == "object") {
+                    data = additional_data;
+                }
+
+                data.fields = this.Fields.list;
+                data.page = this.Page.list;
+                data.limit = this.Limit.list;
+                data.scope = this.Scope.list;
+                data.order = this.Order.list[0];
+                data.order_dir = this.Order.list[1];
+
+
+                var self = this;
+                if (statusCode[200] != undefined) {
+                    statusCode['t200'] = statusCode[200];
+                }
+
+                statusCode[200] = function (r) {
+                    if (r.metadata != undefined) {
+                        self.page.list = r.metadata.page;
+                        self.NumOfPages.list = r.metadata.pages;
+                    }
+                    if (statusCode[200] != undefined) {
+                        statusCode['t200'](r);
+                    }
+                };
+
+                $.ajax({
+                    'url': this.URI + '.' + this.Mimetype.list,
+                    'type': 'GET',
+                    'dataType': this.DataType.list,
+                    'resourceDataType': this.JsonpCallback.list,
+                    'data': data,
+                    'statusCode': statusCode
+                });
+            };
+
+            this.create = function (fields, statusCode) {
+
+            };
+
+            this.update = function (fields, statusCode) {
+                this.set(fields);
+                this.save(statusCode)
+            };
+
+            this.set = function (fields) {
+
+            };
+            this.save = function (statusCode) {
+
+            };
+
+            this.destroy = function (identifier, statusCode) {
+
+            };
+
+            this.setScope = function (scope, requestType) {  // like  {'running': 1, 'age': ['gt',8], 'name': ['contains','Vei']}
+                if (requestType != undefined) {
+                    this.Scope[requestType] = scope;
+                } else {
+                    this.Scope.list = scope;
+                    this.Scope.search = scope;
+                }
+
+
+            };
+
+            this.defineFields = function (fields, requestType) { //search || list || entity, fields array
+                if (requestType != undefined) {
+                    this.Fields [requestType] = fields;
+                } else {
+                    this.Fields.list = fields;
+                    this.Fields.search = fields;
+                }
+            };
+
+            this.orderBy = function (field, direction, requestType) { // -1 asc ,1 desc
+                if (direction == undefined) {
+                    direction = -1;
+                }
+
+                if (requestType != undefined) {
+                    this.Order[requestType] = [field, direction];
+                    localStorage[this.URI + '_order_' + requestType] = [field, direction];
+                } else {
+                    this.Order.list = [field, direction];
+                    localStorage[this.URI + '_order_list'] = [field, direction];
+                    this.Order.search = [field, direction];
+                    localStorage[this.resourceURI + '_order_search'] = [field, direction];
+                }
+            };
+
+
+            this.setPrevPage = function (requestType) {
+                if (requestType != undefined) {
+                    if (this.resourcePage[requestType] > 0) {
+                        this.resourcePage[requestType]--;
+                    }
+                } else {
+                    if (this.resourcePage[requestType] > 0) {
+                        this.resourcePage.list--;
+                        this.resourcePage.search--;
+                    }
+                }
+            };
+
+            this.setNextPage = function (requestType) {
+                if (requestType != undefined) {
+                    if (this.resourcePage[requestType] < this.resourceNumOfPages[requestType]) {
+                        this.resourcePage[requestType]++;
+                    }
+                } else {
+                    if (this.resourcePage[requestType] < this.resourceNumOfPages[requestType]) {
+                        this.resourcePage.list++;
+                        this.resourcePage.search++;
+                    }
+                }
+            };
+
+            this.setPage = function (page, requestType) {
+                if (requestType != undefined) {
+                    this.resourcePage[requestType] = page;
+                } else {
+                    this.resourcePage.list = page;
+                    this.resourcePage.search = page;
+                }
+            };
+
+            this.setLimit = function (numOfItems, requestType) {
+                if (requestType != undefined) {
+                    this.resourceLimit[requestType] = numOfItems;
+                } else {
+                    this.resourceLimit.list = numOfItems;
+                    this.resourceLimit.search = numOfItems;
+                }
+            };
+
+        };
+
+})(Tc.$);
 
 
 (function ($) {
     "use strict";
     Tc.Module = Tc.Module.extend({
-
-        initRest: function (resourceURI) {
-            this.resourceURI = resourceURI; // /rest/com.zuizz.user.users
-            this.resourceId = null;
-            this.resourceMimetype = {'search': 'json', 'list': 'json', 'entity': 'json'};
-            this.resourcePage = {'search': 0, 'list': 0};
-            this.resourceNumOfPages = {'search': 0, 'list': 0};
-            this.resourceLimit = {'search': 10, 'list': 10};
-            this.resourceFields = {'search': ['id'], 'list': ['id', 'title'], 'entity': ['id']};
-            this.resourceScope = {'search': {}, 'list': {}};
-            this.resourceDataType = {'search': 'json', 'list': 'json', 'entity': 'json'};
-            this.resourceJsonpCallback = {'search': null, 'list': null, 'entity': null};
-
-            if (localStorage[this.resourceURI + '_order_list'] == undefined) {
-                localStorage[this.resourceURI + '_order_list'] = [
-                    ['id', 1]
-                ];
-            }
-
-            if (localStorage[this.resourceURI + '_order_search'] == undefined) {
-                localStorage[this.resourceURI + '_order_search'] = [
-                    ['id', 1]
-                ];
-            }
-
-            this.resourceOrder = {
-                'search': localStorage[this.resourceURI + '_order_search'],
-                'list': localStorage[this.resourceURI + '_order_list']
-            };
-
-
-        },
-
-        restLoad: function (identifier, statusCode) {
-            var self = this;
-            self.resourceId = identifier;
-            $.ajax({
-                url: self.resourceURI + self.resourceId + '.' + self.resourceMimetype.entity,
-                type: 'GET',
-                dataType: self.resourceDataType,
-                resourceDataType: self.resourceJsonpCallback.entity,
-                data: {
-                    'fields': self.resourceFields.entity
-                },
-                'statusCode': statusCode
-            });
-        },
-
-        restSearch: function (query, statusCode, additional_data, page) {
-            var self = this;
-            var data = {};
-            if (page != undefined) {
-                if (typeof (data) != "object") {
-                    self.resourcePage.list = data;
-                }
-            }
-
-            if (typeof (data) == "object") {
-                data = additional_data;
-            }
-            data.q = query;
-            data.fields = self.resourceFields.search;
-            data.page = self.resourcePage.search;
-            data.limit = self.resourceLimit.search;
-            data.scope = self.resourceScope.search;
-            data.order = self.resourceOrder.search[0];
-            data.order_dir = self.resourceOrder.search[1];
-
-            $.ajax({
-                'url': self.resourceURI + '.' + self.resourceMimetype.search,
-                'type': 'GET',
-                'dataType': self.resourceDataType,
-                'resourceDataType': self.resourceJsonpCallback.search,
-                'data': data,
-                'statusCode': statusCode
-            });
-        },
-        restList: function (statusCode, additional_data, page) {
-            var self = this;
-            var data = {};
-            if (page != undefined) {
-                if (typeof (data) != "object") {
-                    self.resourcePage.list = data;
-                }
-            }
-
-            if (typeof (data) == "object") {
-                data = additional_data;
-            }
-
-            data.fields = self.resourceFields.list;
-            data.page = self.resourcePage.list;
-            data.limit = self.resourceLimit.list;
-            data.scope = self.resourceScope.list;
-            data.order = self.resourceOrder.list[0];
-            data.order_dir = self.resourceOrder.list[1];
-
-
-            $.ajax({
-                'url': self.resourceURI + '.' + self.resourceMimetype.list,
-                'type': 'GET',
-                'dataType': self.resourceDataType,
-                'resourceDataType': self.resourceJsonpCallback.list,
-                'data': data,
-                'statusCode': statusCode
-            });
-        },
-
-        restUpdate: function (identifier, fields, statusCode) {
-        },
-        restDelete: function (identifier, statusCode) {
-        },
-
-        restSetScope: function (scope, requestType) {
-        }, //search || list
-
-        restSetFields: function (fields, requestType) { //search || list || entity, fields array
-            if (requestType != undefined) {
-
-                self.resourceFields [requestType] = fields;
-            } else {
-                self.resourceFields.list = fields;
-                self.resourceFields.search = fields;
-            }
-        },
-
-        restOrderBy: function (field, direction, requestType) { // -1 asc ,1 desc
-            if (direction == undefined) {
-                direction = -1;
-            }
-
-            if (requestType != undefined) {
-                self.resourceOrder[requestType] = [field, direction];
-                localStorage[self.resourceURI + '_order_' + requestType] = [field, direction];
-            } else {
-                self.resourceOrder.list = [field, direction];
-                localStorage[this.resourceURI + '_order_list'] = [field, direction];
-                self.resourceOrder.search = [field, direction];
-                localStorage[this.resourceURI + '_order_search'] = [field, direction];
-            }
-        },
-
-
-        restSetPrevPage: function (requestType) {
-            if (requestType != undefined) {
-                if (this.resourcePage[requestType] > 0) {
-                    this.resourcePage[requestType]--;
-                }
-            } else {
-                if (this.resourcePage[requestType] > 0) {
-                    this.resourcePage.list--;
-                    this.resourcePage.search--;
-                }
-            }
-        },
-        restSetNextPage: function (requestType) {
-            if (requestType != undefined) {
-                if (this.resourcePage[requestType] < this.resourceNumOfPages[requestType]) {
-                    this.resourcePage[requestType]++;
-                }
-            } else {
-                if (this.resourcePage[requestType] < this.resourceNumOfPages[requestType]) {
-                    this.resourcePage.list++;
-                    this.resourcePage.search++;
-                }
-            }
-        },
-
-        restSetPage: function (page, requestType) {
-            if (requestType != undefined) {
-                this.resourcePage[requestType] = page;
-            } else {
-                this.resourcePage.list = page;
-                this.resourcePage.search = page;
-            }
-        },
-
-        restSetLimit: function (numOfItems, requestType) {
-            if (requestType != undefined) {
-                this.resourceLimit[requestType] = numOfItems;
-            } else {
-                this.resourceLimit.list = numOfItems;
-                this.resourceLimit.search = numOfItems;
-            }
-        },
 
 
         initDot: function () {
@@ -280,8 +376,5 @@
                 }
             };
         }
-
-
-
     });
 })(Tc.$);
