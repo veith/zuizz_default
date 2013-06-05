@@ -20,15 +20,18 @@ if (getenv('sysmode') != '') {
 session_save_path(ZU_DIR_SESSION);
 
 
-//IDEA:: Themed css files
-
 if (substr(basename($_REQUEST ['css']),  -4) == '.css') {
     $css = basename($_REQUEST ['css']);
 } else {
     $css = basename($_REQUEST ['css']) . '.css';
 }
 
-$cssfile = ZU_DIR_FEATURE . basename($_REQUEST ['feature']) . '/css/' . $css;
+$cssfile = ZU_DIR_FEATURE . ($_REQUEST ['feature']) . '/css/' . $css;
+
+if(is_file(ZU_DIR_CUSTOM_SKINS . 'css.' .  ($_REQUEST ['feature']) . '/' . $css)){
+    $cssfile = ZU_DIR_CUSTOM_SKINS . 'css.' .  ($_REQUEST ['feature']) . '/' . $css;
+}
+
 $lastmod = filemtime($cssfile);
 // Inode
 $ETag = dechex(fileinode($cssfile));
