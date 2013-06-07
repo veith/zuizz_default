@@ -3,9 +3,15 @@ Options +FollowSymLinks
 RewriteEngine on
 DirectoryIndex index.php
 
+#API
+RewriteRule ^api/([0-9]+)/(\w+)([\.\w]+)/([/\w]*)[\.]*([\w+]*)$ /api.php?ZU_feature=$2$3&ZU_version=$1&ZU_mimetype=$5&ZU_identifier=$4&%{QUERY_STRING} [L]
+
+
 #Rest
 RewriteRule ^rest/(.*)/(.*)\.(.*)$ /rest.php?feature=$1&ZU_identifier=$2&ZU_mimetype=$3&%{QUERY_STRING} [L]
 RewriteRule ^rest/(.*)/(.*)$ /rest.php?feature=$1&ZU_identifier=$2&%{QUERY_STRING} [L]
+
+
 
 #Fragment
 RewriteRule ^fragment/(.*)/$ /fragment.php?feature=$1&%{QUERY_STRING} [L]

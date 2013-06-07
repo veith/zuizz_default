@@ -285,6 +285,9 @@ Tc.zu = {};
             this.add = function (fields, statusCode) {
 
             };
+            this.post_file = function (fields, statusCode) {
+
+            };
 
             this.update = function (fields, statusCode) {
                 this.set(fields);
@@ -411,6 +414,22 @@ Tc.zu = {};
     "use strict";
     Tc.Module = Tc.Module.extend({
 
+        autobutton:function(){
+            var $ctx = this.$ctx,
+                self = this;
+            $ctx.on('click', '.tcb', function () {
+                var action = this.className.match(/tcb-\w+/g);
+                var button = this;
+                var i = 0;
+                if (action != null) {
+                    for (i; i < action.length; i++) {
+                        if(typeof(self[action[i]]) == "function"){
+                            self[action[i]](button);
+                        }
+                    }
+                }
+            });
+        },
 
         initDot: function () {
             var $ctx = this.$ctx,
